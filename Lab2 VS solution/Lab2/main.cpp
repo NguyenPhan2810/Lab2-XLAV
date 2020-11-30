@@ -32,7 +32,7 @@ int main(int argc, char** argv)
 	std::string interpolate;
 	std::string inputPath;
 
-	// Retrieve information
+	// Retrieve commands
 	if (argc > 1)
 	{
 		task = std::string(argv[1]);
@@ -47,19 +47,20 @@ int main(int argc, char** argv)
 		task = "--flip";
 		interpolate = "--nn";
 		inputPath = "lena.png";
-		args.push_back("Ox");
+		args.push_back("Oy");
 	}
 
+	// Confirm commands
 	std::cout << task << " " << interpolate << " " << inputPath;
 	for (auto arg : args)
 		std::cout << " " << arg;
 	std::cout << std::endl;
 
+	// Perform commands
 	TransformController controller;
 
 	cv::Mat before = cv::imread(inputPath, cv::ImreadModes::IMREAD_ANYCOLOR);
 	cv::Mat after;
-	
 	if (controller.execute(before, after, taskMap.at(task), args, interpolateMap.at(interpolate)))
 	{
 		cv::namedWindow(windowsBefore);

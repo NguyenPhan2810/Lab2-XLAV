@@ -10,8 +10,6 @@ bool TransformController::execute(const cv::Mat& source, cv::Mat& dest,
     std::vector<std::string> args,
     PixelInterpolator interpolator)
 {
-    cv::Mat result;
-
     PixelInterpolate* interp= nullptr;
 
     // Find the appropriate interpolator
@@ -38,7 +36,7 @@ bool TransformController::execute(const cv::Mat& source, cv::Mat& dest,
         break;
     case TransformTask::flip:
         bool axis = args[0] == "Ox";
-        if (!Flip(source, result, axis, interp))
+        if (!Flip(source, dest, axis, interp))
         {
             Error("Flip failed");
             return false;

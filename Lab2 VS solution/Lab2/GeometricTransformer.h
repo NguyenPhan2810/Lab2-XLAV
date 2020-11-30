@@ -19,8 +19,7 @@ public:
 	Trả về
 		- Giá trị màu được nội suy
 	*/
-	virtual uchar Interpolate(
-		float tx, float ty, uchar* pSrc, int srcWidthStep, int nChannels) = 0;
+	virtual uchar Interpolate(float tx, float ty, int tChannel, uchar* pSrc, int srcWidthStep, int nChannels) = 0;
 };
 
 /*
@@ -29,7 +28,7 @@ Lớp nội suy màu theo phương pháp song tuyến tính
 class BilinearInterpolate : public PixelInterpolate
 {
 public:
-	uchar Interpolate(float tx, float ty, uchar* pSrc, int srcWidthStep, int nChannels);
+	uchar Interpolate(float tx, float ty, int tChannel, uchar* pSrc, int srcWidthStep, int nChannels);
 };
 
 /*
@@ -38,7 +37,7 @@ Lớp nội suy màu theo phương pháp láng giềng gần nhất
 class NearestNeighborInterpolate : public PixelInterpolate
 {
 public:
-	uchar Interpolate(float tx, float ty, uchar* pSrc, int srcWidthStep, int nChannels);
+	uchar Interpolate(float tx, float ty, int tChannel, uchar* pSrc, int srcWidthStep, int nChannels);
 };
 
 /*
@@ -50,8 +49,13 @@ class AffineTransform
 public:
 	void Translate(float dx, float dy);// xây dựng cv::Matrix transform cho phép tịnh tiến theo vector (dx,dy)
 	void Rotate(float angle);//xây dựng cv::Matrix transform cho phép xoay 1 góc angle
-	void Scale(float sx, float sy);//xây dựng cv::Matrix transform cho phép tỉ lệ theo hệ số 		
-	void TransformPoint(float &x, float &y);//transform 1 điểm (x,y) theo cv::Matrix transform đã có
+	void Scale(float sx, float sy);//xây dựng cv::Matrix transform cho phép tỉ lệ theo hệ số 	
+	
+								   
+	// Transform 1 điểm (x,y) theo cv::Matrix transform đã có
+	void TransformPoint(float &x, float &y, bool inverseMatrix = false); 
+
+	AffineTransform();
 };
 
 /*
