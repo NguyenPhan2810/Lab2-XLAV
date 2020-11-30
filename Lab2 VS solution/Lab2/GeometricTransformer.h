@@ -162,7 +162,7 @@ public:
 	int Flip(
 		const Mat &srcImage, 
 		Mat &dstImage, 
-		bool direction 
+		bool direction,
 		PixelInterpolate* interpolator);
 
 	GeometricTransformer();
