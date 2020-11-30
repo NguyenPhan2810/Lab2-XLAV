@@ -1,6 +1,8 @@
 ﻿#pragma once
 
 #include <Windows.h>
+#include <opencv2/opencv.hpp>
+
 /*
  Lớp base dùng để nội suy màu của 1 pixel
 */
@@ -19,8 +21,6 @@ public:
 	*/
 	virtual uchar Interpolate(
 		float tx, float ty, uchar* pSrc, int srcWidthStep, int nChannels) = 0;
-	PixelInterpolate();
-	~PixelInterpolate();
 };
 
 /*
@@ -30,8 +30,6 @@ class BilinearInterpolate : public PixelInterpolate
 {
 public:
 	uchar Interpolate(float tx, float ty, uchar* pSrc, int srcWidthStep, int nChannels);
-	BilinearInterpolate();
-	~BilinearInterpolate();
 };
 
 /*
@@ -41,8 +39,6 @@ class NearestNeighborInterpolate : public PixelInterpolate
 {
 public:
 	uchar Interpolate(float tx, float ty, uchar* pSrc, int srcWidthStep, int nChannels);
-	NearestNeighborInterpolate();
-	~NearestNeighborInterpolate();
 };
 
 /*
@@ -50,15 +46,12 @@ Lớp biểu diễn pháp biến đổi affine
 */
 class AffineTransform
 {
-	Mat _matrixTransform;//ma trận 3x3 biểu diễn phép biến đổi affine
+	cv::Mat _MatrixTransform;//ma trận 3x3 biểu diễn phép biến đổi affine
 public:
-	void Translate(float dx, float dy);// xây dựng matrix transform cho phép tịnh tiến theo vector (dx,dy)
-	void Rotate(float angle);//xây dựng matrix transform cho phép xoay 1 góc angle
-	void Scale(float sx, float sy);//xây dựng matrix transform cho phép tỉ lệ theo hệ số 		
-	void TransformPoint(float &x, float &y);//transform 1 điểm (x,y) theo matrix transform đã có
-	
-	AffineTransform();
-	~AffineTransform();
+	void Translate(float dx, float dy);// xây dựng cv::Matrix transform cho phép tịnh tiến theo vector (dx,dy)
+	void Rotate(float angle);//xây dựng cv::Matrix transform cho phép xoay 1 góc angle
+	void Scale(float sx, float sy);//xây dựng cv::Matrix transform cho phép tỉ lệ theo hệ số 		
+	void TransformPoint(float &x, float &y);//transform 1 điểm (x,y) theo cv::Matrix transform đã có
 };
 
 /*
@@ -80,8 +73,8 @@ public:
 	 - 1: Nếu biến đổi thành công
 	*/
 	int Transform(
-		const Mat &beforeImage, 
-		Mat &afterImage, 
+		const cv::Mat &beforeImage, 
+		cv::Mat &afterImage, 
 		AffineTransform* transformer, 
 		PixelInterpolate* interpolator);
 
@@ -97,7 +90,7 @@ public:
 	 - 1: Nếu biến đổi thành công
 	*/
 	int RotateKeepImage(
-		const Mat &srcImage, Mat &dstImage, float angle, PixelInterpolate* interpolator);
+		const cv::Mat &srcImage, cv::Mat &dstImage, float angle, PixelInterpolate* interpolator);
 
 	/*
 	Hàm xoay không bảo toàn nội dung ảnh theo góc xoay cho trước
@@ -111,7 +104,7 @@ public:
 	 - 1: Nếu biến đổi thành công
 	*/
 	int RotateUnkeepImage(
-		const Mat &srcImage, Mat &dstImage, float angle, PixelInterpolate* interpolator);
+		const cv::Mat &srcImage, cv::Mat &dstImage, float angle, PixelInterpolate* interpolator);
 
 	/*
 	Hàm phóng to, thu nhỏ ảnh theo tỉ lệ cho trước
@@ -125,8 +118,8 @@ public:
 	 - 1: Nếu biến đổi thành công
 	*/
 	int Scale(
-		const Mat &srcImage, 
-		Mat &dstImage, 
+		const cv::Mat &srcImage, 
+		cv::Mat &dstImage, 
 		float sx, float sy, 
 		PixelInterpolate* interpolator);
 		
@@ -143,8 +136,8 @@ public:
 	 - 1: Nếu biến đổi thành công
 	*/
 	int Resize(
-		const Mat &srcImage, 
-		Mat &dstImage, 
+		const cv::Mat &srcImage, 
+		cv::Mat &dstImage, 
 		int newWidth, int newHeight, 
 		PixelInterpolate* interpolator);
 
@@ -160,12 +153,9 @@ public:
 	 - 1: Nếu biến đổi thành công
 	*/
 	int Flip(
-		const Mat &srcImage, 
-		Mat &dstImage, 
+		const cv::Mat &srcImage, 
+		cv::Mat &dstImage, 
 		bool direction,
 		PixelInterpolate* interpolator);
-
-	GeometricTransformer();
-	~GeometricTransformer();
 };
 

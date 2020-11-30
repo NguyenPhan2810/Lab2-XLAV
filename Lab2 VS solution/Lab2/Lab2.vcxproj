@@ -145,10 +145,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GeometricTransformer.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="TransformController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GeometricTransformer.h" />
+    <ClInclude Include="TransformController.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
