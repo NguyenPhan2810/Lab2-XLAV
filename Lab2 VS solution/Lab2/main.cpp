@@ -44,17 +44,17 @@ int main(int argc, char** argv)
 	}
 	else
 	{
-		task = "--flip";
-		interpolate = "--nn";
+		task = "--zoom";
+		interpolate = "--bl";
 		inputPath = "lena.png";
-		args.push_back("Oy");
+		args.push_back("5");
 	}
 
 	// Confirm commands
-	std::cout << task << " " << interpolate << " " << inputPath;
+	std::string command(task + " " + interpolate + " " + inputPath);
 	for (auto arg : args)
-		std::cout << " " << arg;
-	std::cout << std::endl;
+		command += " " + arg;
+	std::cout << command << std::endl;
 
 	// Perform commands
 	TransformController controller;
@@ -63,11 +63,12 @@ int main(int argc, char** argv)
 	cv::Mat after;
 	if (controller.execute(before, after, taskMap.at(task), args, interpolateMap.at(interpolate)))
 	{
+		std::string windowAfterName = windowsAfter + std::string(" | Command: " + command);
 		cv::namedWindow(windowsBefore);
-		cv::namedWindow(windowsAfter);
+		cv::namedWindow(windowAfterName);
 
 		cv::imshow(windowsBefore, before);
-		cv::imshow(windowsAfter, after);
+		cv::imshow(windowAfterName, after);
 
 		cv::waitKey(0);
 	}
